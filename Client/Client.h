@@ -78,6 +78,20 @@ public:
 	{
 		return Process.Write<int>(Offsets::m_dwForceAttack, 4);
 	}
+	
+	// Force m_dwForceAttack using an arbitrary value
+	// Returns true if successful
+	bool EditAttack(int Value)
+	{
+		return Process.Write<int>(Offsets::m_dwForceAttack, Value);
+	}
+	
+	// Force m_dwForceJump using an arbitrary value
+	// Returns true if successful
+	bool EditJump(int Value)
+	{
+		return Process.Write<int>(Offsets::m_dwForceJump, Value);
+	}
 
 };
 
