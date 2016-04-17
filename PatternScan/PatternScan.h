@@ -93,12 +93,7 @@ public:
 		for (DWORD i=0; i<ModuleBase + ModuleSize; i++)
         {
             if (this->MaskCheck(i, Pattern, Mask))
-			{
-				if (!SubtractBase)
-					return this->ModuleBase + (i + AddValue);
-				else
-					return (this->ModuleBase + (i + AddValue)) - ModuleBase;
-			}
+		return SubtractBase ? i + AddValue : ModuleBase + i + AddValue;
         }
  
         return NULL;
