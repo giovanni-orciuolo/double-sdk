@@ -25,88 +25,70 @@ Serge
 namespace DoubleSDK
 {
 
-class CPatternScan
-{
-private:
-
-	MODULEENTRY32 ModuleToScan;
-	HANDLE HandleToScan;
-	BYTE* DumpedRegion;
-	DWORD ModuleBase;
-	DWORD ModuleSize;
-
-public:
-
-	// Inits a PatternScanner using an handle to scan and a module entry to scan
-	void Init(HANDLE HandleToScan, MODULEENTRY32 ModuleToScan)
+	class CPatternScan
 	{
-		this->HandleToScan = HandleToScan;
-		this->ModuleToScan = ModuleToScan;
-		this->ModuleBase = reinterpret_cast<DWORD>(ModuleToScan.modBaseAddr);
-		this->ModuleSize = ModuleToScan.modBaseSize;
-	}
+	private:
 
-	// Dump a module, store each byte of the module into DumpedRegion
-	bool Dump()
-	{
-		this->DumpedRegion = new BYTE[this->ModuleSize];
+		MODULEENTRY32 ModuleToScan;
+		HANDLE* HandleToScan;
+		std::unique_ptr<BYTE[]> DumpedRegion;
+		DWORD ModuleBase;
+		DWORD ModuleSize;
 
-		bool rpmResult;
-
-		rpmResult =
-			(bool)
-			ReadProcessMemory(
-			this->HandleToScan,
-			reinterpret_cast<LPCVOID>(this->ModuleBase),
-			DumpedRegion,
-			ModuleSize,
-			NULL
-			);
-
-		if (!rpmResult) 
+	public:
+		
+		// Inits a PatternScanner using an handle to scan and a module entry to scan
+		void Init(HANDLE* HandleToScan, MODULEENTRY32 ModuleToScan)
 		{
-			Clear();
-			return false;
+			this->HandleToScan = HandleToScan;
+			this->ModuleToScan = ModuleToScan;
+			DumpedRegion = nullptr;
+			ModuleBase = reinterpret_cast<DWORD>(ModuleToScan.modBaseAddr);
+			ModuleSize = ModuleToScan.modBaseSize;
 		}
 
-		return true;
-	}
+		// Dump a module, store each byte of the module into DumpedRegion
+		bool Dump()
+		{
+			DumpedRegion = std::make_unique<BYTE[]>( ModuleSize );
+			
+			auto BytesRead = SIZE_T( );
+		
+			return ReadProcessMemory(
+				this->HandleToScan,
+				reinterpret_cast<LPCVOID>(this->ModuleBase),
+				DumpedRegion,
+				ModuleSize,
+				&BytesRead
+				) && BytesRead == ModuleSize ? true : false;
+		}
 
-	// Check using mask
-	bool MaskCheck(int StartOff, const BYTE* Pattern, const char* Mask)
-	{
-		for (unsigned int i=0; i<strlen(Mask); i++)
-        {
-            if (Mask[i] == '?') continue;
+		// Check using mask
+		bool MaskCheck(int StartOff, const BYTE* Pattern, const char* Mask)
+		{
+			for (unsigned int i=0; i<strlen(Mask); i++)
+        		{
+        			if (Mask[i] == '?') continue;
  
-            if (Mask[i] == 'x' && Pattern[i] != this->DumpedRegion[StartOff + i])
-                return false;
-        }
-        return true;
-	}
+            			if (Mask[i] == 'x' && Pattern[i] != this->DumpedRegion[StartOff + i])
+                			return false;
+        		}
+        		return true;
+		}
 
-	// Find a pattern in the dumped module using a pattern and a mask.
-	DWORD FindPattern(const BYTE* Pattern, const char* Mask, DWORD AddValue = NULL, bool SubtractBase = false)
-	{
-		if (DumpedRegion == nullptr) if (!this->Dump()) return NULL;
+		// Find a pattern in the dumped module using a pattern and a mask.
+		DWORD FindPattern(const BYTE* Pattern, const char* Mask, DWORD AddValue = NULL, bool SubtractBase = false)
+		{
+			if (DumpedRegion == nullptr) if (!this->Dump()) return NULL;
 
-		for (DWORD i=0; i<ModuleBase + ModuleSize; i++)
-        {
-            if (this->MaskCheck(i, Pattern, Mask))
-		return SubtractBase ? i + AddValue : ModuleBase + i + AddValue;
-        }
- 
-        return NULL;
-	}
-
-	// Clear the dumped region, MUST DO IT otherwise you get a huge memory leak! :)
-	void Clear()
-	{
-		this->DumpedRegion = nullptr;
-	}
-
-};
-
+			for (DWORD i=0; i<ModuleBase + ModuleSize; i++)
+        		{
+        			if (this->MaskCheck(i, Pattern, Mask))
+					return SubtractBase ? i + AddValue : ModuleBase + i + AddValue;
+			}
+        		return NULL;
+		}
+	};
 }
 
 DoubleSDK::CPatternScan ClientScanner;
