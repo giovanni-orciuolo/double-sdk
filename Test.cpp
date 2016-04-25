@@ -11,8 +11,7 @@ Serge
 */
 
 #include "DoubleSDK.h"
-using namespace DoubleSDK;
-using namespace std;
+
 
 /// LITTLE AND SIMPLE BHOP MADE WITH DOUBLE SDK
 int main()
@@ -71,8 +70,6 @@ int main()
 	}
 
 	// Perform clean up here
-	ClientScanner.Clear(); // Clear the dumped client.dll
-	EngineScanner.Clear(); // Clear the dumped engine.dll
 	Process.Clear(); // Close the handle to CS:GO
 	return 0;
 }
