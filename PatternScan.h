@@ -57,7 +57,7 @@ namespace DoubleSDK
 			return ReadProcessMemory(
 				this->HandleToScan,
 				reinterpret_cast<LPCVOID>(this->ModuleBase),
-				DumpedRegion,
+				DumpedRegion.get( ),
 				ModuleSize,
 				&BytesRead
 				) && BytesRead == ModuleSize ? true : false;
