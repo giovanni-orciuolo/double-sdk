@@ -19,12 +19,16 @@ Serge
 #include <stdint.h>
 #include <sys/stat.h>
 #include <memory>
+#include <math.h>
+#include <cmath>
+#include <random>
+#include <ctime>
 
 #include "Process.h"
 #include "PatternScan.h"
-#include "Enums.h"
-#include "Math.h"
-#include "Utils.h"
+#include "Utils/Enums.h"
+#include "Utils/Maths.h"
+#include "Utils/Utils.h"
 #include "Offsets.h"
 #include "Client.h"
 #include "Engine.h"

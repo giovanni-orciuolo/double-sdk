@@ -20,9 +20,9 @@ Serge
 
 #pragma once
 
+#include "DoubleSDK.h"
 #include <math.h>
-#include <time.h>
-#include <stdlib.h>
+
 
 #define M_RADPI 57.295779513082f
 #define M_PI 3.14159265358979323846

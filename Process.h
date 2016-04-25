@@ -241,7 +241,7 @@ public:
     }
 
 	// Get hProcess
-	HANDLE GetProcHandle() { return this->hProcess; }
+	HANDLE* GetProcHandle() { return &this->hProcess; }
 	// Get dwProcessID
 	DWORD GetProcID() { return this->dwProcessID; }
 	// Get ProcessName
