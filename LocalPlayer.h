@@ -19,6 +19,7 @@ Serge
 #pragma once
 #include "DoubleSDK.h"
 
+
 namespace DoubleSDK
 {
 
