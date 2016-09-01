@@ -79,7 +79,7 @@ int ThrowLog(std::string Log, UINT uType = MB_ICONINFORMATION | MB_OK, ...)
 	va_list v1;
 	va_start(v1, Log);
 	char buff[1024];
-	vsprintf(buff, Log.c_str(), v1);
+	vsprintf_s(buff, Log.c_str(), v1);
 	return MessageBoxA(NULL, buff, "LOG", uType);
 }
 
@@ -89,7 +89,7 @@ int ThrowError(std::string Error, UINT uType = MB_ICONSTOP | MB_OK, ...)
 	va_list v1;
 	va_start(v1, Error);
 	char buff[1024];
-	vsprintf(buff, Error.c_str(), v1);
+	vsprintf_s(buff, Error.c_str(), v1);
 	return MessageBoxA(NULL, buff, "ERROR", uType);
 }
 
