@@ -60,7 +60,7 @@ int main()
 		{
 			if (Me.OnGround()) // Check if the local player is on ground
 			{
-				// Perform bhop
+
 				Client.ForceJump();
 				Sleep(20);
 				Client.StopJump();

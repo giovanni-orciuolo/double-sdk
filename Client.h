@@ -55,42 +55,42 @@ public:
 	// Returns true if successful
 	bool ForceJump()
 	{
-		return Process.Write<int>(Offsets::m_dwForceJump, 5);
+		return Process.Write<int>(Process.GetClientBase() + Offsets::m_dwForceJump, 5);
 	}
 
 	// Force the player to stop jumping
 	// Returns true if successful
 	bool StopJump()
 	{
-		return Process.Write<int>(Offsets::m_dwForceJump, 4);
+		return Process.Write<int>(Process.GetClientBase() + Offsets::m_dwForceJump, 4);
 	}
 
 	// Force the player to attack
 	// Returns true if successful
 	bool ForceAttack()
 	{
-		return Process.Write<int>(Offsets::m_dwForceAttack, 5);
+		return Process.Write<int>(Process.GetClientBase() + Offsets::m_dwForceAttack, 5);
 	}
 
 	// Force the player to stop attacking
 	// Returns true if successful
 	bool StopAttack()
 	{
-		return Process.Write<int>(Offsets::m_dwForceAttack, 4);
+		return Process.Write<int>(Process.GetClientBase() + Offsets::m_dwForceAttack, 4);
 	}
 	
 	// Force m_dwForceAttack using an arbitrary value
 	// Returns true if successful
 	bool EditAttack(int Value)
 	{
-		return Process.Write<int>(Offsets::m_dwForceAttack, Value);
+		return Process.Write<int>(Process.GetClientBase() + Offsets::m_dwForceAttack, Value);
 	}
 	
 	// Force m_dwForceJump using an arbitrary value
 	// Returns true if successful
 	bool EditJump(int Value)
 	{
-		return Process.Write<int>(Offsets::m_dwForceJump, Value);
+		return Process.Write<int>(Process.GetClientBase() + Offsets::m_dwForceJump, Value);
 	}
 
 };
